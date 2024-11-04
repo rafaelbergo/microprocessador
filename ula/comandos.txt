@@ -1,0 +1,36 @@
+construir a imagem:
+
+docker build -t vhdl-env .
+
+=======================
+
+rodar o container:
+
+docker run -it --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $(pwd):/home/vhdl vhdl-env
+
+=======================
+
+compilar o arquivo vhdl:
+
+ghdl -a arquivo.vhdl
+
+
+=======================
+
+elaborar o design:
+
+ghdl -e nome_da_entidade
+
+
+=======================
+
+simule o design:
+
+ghdl -r nome_da_entidade --vcd=waveform.vcd
+
+=======================
+
+Visualize o VCD com GTKWave:
+
+gtkwave waveform.vcd
+
