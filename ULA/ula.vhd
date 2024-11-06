@@ -36,8 +36,8 @@ begin
     result <=   sum when operation = "00" else -- soma
                 sub when operation = "01" else -- subtração
                 op_and when operation = "10" else -- and
-                op_or; -- or
-    
+                op_or when operation = "11" else -- or
+                "0000000000000000";
     -- flag zero
     zero_flag <=    '1' when (
                         (operation = "00" and sum = zero) or
