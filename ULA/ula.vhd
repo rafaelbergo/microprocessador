@@ -28,7 +28,7 @@ signal carry_sum, carry_sub:                std_logic := '0';
 begin
     -- operacoes com valores unsigned
     sum <= entr0 + entr1;
-    sub <= entr0 - entr1;
+    sub <= entr0 + (not(entr1) + "0000000000000001");
     op_and <= entr0 and entr1;
     op_or <= entr0 or entr1;
 
