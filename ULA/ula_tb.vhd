@@ -57,12 +57,12 @@ begin
         operation <= "10"; -- and
         entr0 <= "0010011000110101"; -- 9781
         entr1 <= "0000010011011000"; -- 1240
-        wait for 50 ns; -- esperado 1040
+        wait for 50 ns; -- esperado 0000010000010000 (1040)
 
         operation <= "11"; -- or
         entr0 <= "1000100111000010"; -- 35266
         entr1 <= "0100110000110011"; -- 19507
-        wait for 50 ns; -- esperado 52723
+        wait for 50 ns; -- esperado 1100110111110011 (52723)
 
         operation <= "00"; -- soma com overflow
         entr0 <= "0111111111111111";
@@ -74,10 +74,20 @@ begin
         entr1 <= "0000000000000001";
         wait for 50 ns; -- esperado carry_flag = 1
 
-        operation <= "01"; -- subtração com carry ---
+        operation <= "01"; -- subtração com carry
         entr0 <= "0000000000000001";
         entr1 <= "0000000000000101";
         wait for 50 ns; -- esperado carry_flag = 1
+
+        operation <= "01"; -- subtração com overflow
+        entr0 <= "1000000000000000"; 
+        entr1 <= "0000000000000001";
+        wait for 50 ns; -- esperado overflow_flag = 1
+
+        operation <= "00"; -- soma com carry e overflow
+        entr0 <= "1000000000000000";
+        entr1 <= "1000000000000000";
+        wait for 50 ns; -- esperado carry_flag = 1 e overflow_flag = 1
 
         -- Teste flag zero
         operation <= "01"; -- subtração
@@ -85,6 +95,10 @@ begin
         entr1 <= "0000000000000001";
         wait for 50 ns; -- esperado zero_flag = 1
 
+        operation <= "01"; -- subtração
+        entr0 <= "0000000000000000";
+        entr1 <= "0000000000000000";
+        wait for 50 ns; -- esperado zero_flag = 1
         -- Teste comparacoes
         operation <= "00"; -- soma
         entr0 <= "0000000000000001";

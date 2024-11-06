@@ -38,6 +38,7 @@ begin
                 op_and when operation = "10" else -- and
                 op_or when operation = "11" else -- or
                 "0000000000000000";
+
     -- flag zero
     zero_flag <=    '1' when (
                         (operation = "00" and sum = zero) or
@@ -51,15 +52,13 @@ begin
     sub_17_bits <= ('0' & entr0) - ('0' & entr1);
 
     carry_sum <= sum_17_bits(16);
-    --carry_sub <= '0' when entr0 <= entr1 else '1';
     carry_sub <= sub_17_bits(16);
 
     carry_flag <=   carry_sum when operation = "00" else
                     carry_sub when operation = "01" else
                     '0';
 
-    -- carry overflow
-    -- overflow_flag <= '1' when (entr0(15)='1' and entr1(15)='1') or (entr0(15)='0' and entr1(15)='0') else '0';
+    -- flag overflow
     overflow_flag <= '1' when (operation = "00" and 
                             ((entr0(15) = '0' and entr1(15) = '0' and sum(15) = '1') or 
                              (entr0(15) = '1' and entr1(15) = '1' and sum(15) = '0'))) or
@@ -67,7 +66,6 @@ begin
                             ((entr0(15) = '0' and entr1(15) = '1' and sub(15) = '1') or 
                              (entr0(15) = '1' and entr1(15) = '0' and sub(15) = '0')))
                    else '0';
-
 
     -- flag comparação
     greater_than_flag <= '1' when entr0 > entr1 else '0'; -- entr0 > entr1
