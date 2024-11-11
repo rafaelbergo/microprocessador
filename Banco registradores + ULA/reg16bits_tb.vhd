@@ -76,9 +76,6 @@ begin
         wr_en <= '0';
         data_in <= "1111111111111111"; -- esperado: 0000000000000000
 
-        wait for 200 ns; -- reseta
-        rst <= '1';
-
         wait for 200 ns; -- tenta escrever com wr_en = 0
         wr_en <= '0';
         data_in <= "1111111111111111"; -- esperado: 0000000000000000
@@ -86,6 +83,10 @@ begin
         wait for 200 ns;
         wr_en <= '1';
         data_in <= "1111111111111111";
+
+        wait for 200 ns;
+        wr_en <= '0';
+        data_in <= "0000111111111111";
         
         wait;                     -- <== OBRIGATORIO TERMINAR COM WAIT; !!!
    end process;
