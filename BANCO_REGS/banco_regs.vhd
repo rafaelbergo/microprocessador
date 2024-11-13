@@ -13,10 +13,8 @@ entity banco_regs is
         wr_en:          in std_logic;
         data_wr:        in unsigned(15 downto 0);
         reg_wr:         in unsigned(3 downto 0); -- escolhe em qual registrador escrever
-        sel_reg_r1:     in unsigned(3 downto 0); -- escolhe qual registrador ler 1
-        sel_reg_r2:     in unsigned(3 downto 0); -- escolhe qual registrador ler 2
-        data_out_r1:    out unsigned(15 downto 0); -- saida do registrador 1
-        data_out_r2:    out unsigned(15 downto 0) -- saida do registrador 2
+        sel_reg:     in unsigned(3 downto 0); -- escolhe qual registrador ler
+        data_out:    out unsigned(15 downto 0); -- saida do registrador
     );
 end entity;
 
@@ -119,26 +117,15 @@ begin
         data_out => r8_out
     );
 
-    data_out_r1 <= r0_out when sel_reg_r1 = "0000" else
-                   r1_out when sel_reg_r1 = "0001" else
-                   r2_out when sel_reg_r1 = "0010" else
-                   r3_out when sel_reg_r1 = "0011" else
-                   r4_out when sel_reg_r1 = "0100" else
-                   r5_out when sel_reg_r1 = "0101" else
-                   r6_out when sel_reg_r1 = "0110" else
-                   r7_out when sel_reg_r1 = "0111" else
-                   r8_out when sel_reg_r1 = "1000" else
-                   "0000000000000000";
-
-    data_out_r2 <= r0_out when sel_reg_r2 = "0000" else
-                    r1_out when sel_reg_r2 = "0001" else
-                    r2_out when sel_reg_r2 = "0010" else
-                    r3_out when sel_reg_r2 = "0011" else
-                    r4_out when sel_reg_r2 = "0100" else
-                    r5_out when sel_reg_r2 = "0101" else
-                    r6_out when sel_reg_r2 = "0110" else
-                    r7_out when sel_reg_r2 = "0111" else
-                    r8_out when sel_reg_r2 = "1000" else
-                    "0000000000000000";
+    data_out <= r0_out when sel_reg = "0000" else
+                r1_out when sel_reg = "0001" else
+                r2_out when sel_reg = "0010" else
+                r3_out when sel_reg = "0011" else
+                r4_out when sel_reg = "0100" else
+                r5_out when sel_reg = "0101" else
+                r6_out when sel_reg = "0110" else
+                r7_out when sel_reg = "0111" else
+                r8_out when sel_reg = "1000" else
+                "0000000000000000";
 
 end architecture;

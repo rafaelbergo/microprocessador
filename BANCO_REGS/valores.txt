@@ -1,0 +1,11 @@
+ULA:
+- operation: 
+    00 = soma
+    01 = subtração
+    10 = and
+    11 = or
+
+Banco registradores ULA:
+- operando_selector:
+    0 = usa a constante
+    1 = usa o valor do registrador r1

@@ -12,12 +12,20 @@ architecture a_banco_regs_ula_tb of banco_regs_ula_tb is
         wr_en:          in std_logic;
         data_wr:        in unsigned(15 downto 0);
         reg_wr:         in unsigned(3 downto 0);
-        sel_reg_r1:     in unsigned(3 downto 0); 
-        sel_reg_r2:     in unsigned(3 downto 0);  
+        sel_reg:     in unsigned(3 downto 0); 
         ula_operation_sel: in unsigned(1 downto 0);
         operando_cte:   in unsigned(15 downto 0);
         operando_selector: in std_logic;
         out_ula:        out unsigned(15 downto 0)
+    );
+    end component;
+
+    component acumulador is port(
+        clk:            in std_logic;
+        rst:            in std_logic;
+        wr_en:          in std_logic;
+        data_in:        in unsigned(15 downto 0);
+        data_out:       out unsigned(15 downto 0)
     );
     end component;
 
@@ -26,7 +34,7 @@ architecture a_banco_regs_ula_tb of banco_regs_ula_tb is
     signal clk, rst, wr_en:                 std_logic;
     signal data_wr:                         unsigned(15 downto 0);
     signal reg_wr:                          unsigned(3 downto 0);
-    signal sel_reg_r1, sel_reg_r2:          unsigned(3 downto 0);
+    signal sel_reg:                      unsigned(3 downto 0);
     signal ula_operation_sel:               unsigned(1 downto 0);
     signal operando_cte:                    unsigned(15 downto 0);
     signal operando_selector:               std_logic;
@@ -40,13 +48,21 @@ begin
         wr_en => wr_en,
         data_wr => data_wr,
         reg_wr => reg_wr,
-        sel_reg_r1 => sel_reg_r1,
-        sel_reg_r2 => sel_reg_r2,
+        sel_reg => sel_reg,
         ula_operation_sel => ula_operation_sel,
         operando_cte => operando_cte,
         operando_selector => operando_selector,
         out_ula => out_ula
     );
+
+    acum: acumulador port map(
+        clk => clk,
+        rst => rst,
+        wr_en => wr_en,
+        data_in => ula_out,
+        data_out => acumulador_out
+    );
+
         
     reset_global: process
     begin
@@ -80,7 +96,7 @@ begin
         wait for 200 ns;
         wr_en <= '1'; 
 
-        sel_reg_r1 <= "0000"; -- r1 = 0
+        sel_reg <= "0000"; -- r1 = 0
         operando_selector <= '0'; -- operando = constante
         operando_cte <= "0000000000000010"; -- 2
         ula_operation_sel <= "00"; -- operacao = soma
@@ -88,19 +104,18 @@ begin
         -- esperado r1 = 2
 
         wait for 100 ns;
-        sel_reg_r2 <= "0010"; -- seleciona o r2
         operando_selector <= '0'; -- operando = constante
         operando_cte <= "0000000000001001"; -- 9
         ula_operation_sel <= "00"; -- operacao = soma
         reg_wr <= "0010"; -- escreve no r1
-        -- esperado r2 = 9
+        -- esperado out_ula = 9
 
         wait for 100 ns;
-        sel_reg_r1 <= "0001"; -- r1 = 2
-        sel_reg_r2 <= "0010"; -- r2 = 9
+        sel_reg <= "0001"; -- r1 = 2
         operando_selector <= '1'; -- operando = r2
         ula_operation_sel <= "00"; -- operacao = soma
-        reg_wr <= "0011"; -- escreve no r3
+        reg_wr <= "0011"; -- escreve no r3 
+        -- esperado out_ula = 2+9 = 11
 
 
 
