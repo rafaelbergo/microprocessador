@@ -13,17 +13,17 @@ entity regs16bits is
 end entity;
 
 architecture a_regs16bits of regs16bits is
-    signal regs_16: unsigned(15 downto 0) := (others => '0');
+    signal registro: unsigned(15 downto 0);
 begin
     process(clk, rst, wr_en)
     begin
         if rst = '1' then
-            regs_16 <= (others => '0');
+            registro <= "0000000000000000";
         elsif wr_en = '1' then
             if rising_edge(clk) then
-                regs_16 <= data_in;
+                registro <= data_in;
             end if;
         end if;
     end process;
-    data_out <= regs_16;
+    data_out <= registro;
 end architecture;

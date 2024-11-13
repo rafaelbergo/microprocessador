@@ -55,7 +55,7 @@ begin
         wait;
     end process clk_proc;
 
-   process                      -- sinais dos casos de teste (p.ex.)
+   process -- sinais dos casos de teste 
    begin
         wait for 200 ns;
         wr_en <= '0';
@@ -88,6 +88,6 @@ begin
         wr_en <= '0';
         data_in <= "0000111111111111";
         
-        wait;                     -- <== OBRIGATORIO TERMINAR COM WAIT; !!!
+        wait;
    end process;
 end architecture a_reg16bits_tb;
