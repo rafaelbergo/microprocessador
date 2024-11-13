@@ -1,3 +1,7 @@
+-- Giovane Limas Salvi - 2355841 - s71
+-- Rafael Carvalho Bergo - 2387190 - s71
+------------------------------------------------------------------
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -11,7 +15,7 @@ entity banco_regs is
         reg_wr:         in unsigned(3 downto 0); -- escolhe em qual registrador escrever
         sel_reg_r1:     in unsigned(3 downto 0); -- escolhe qual registrador ler 1
         sel_reg_r2:     in unsigned(3 downto 0); -- escolhe qual registrador ler 2
-        data_out_r1:    out unsigned(15 downto 0) -- saida do registrador 1
+        data_out_r1:    out unsigned(15 downto 0); -- saida do registrador 1
         data_out_r2:    out unsigned(15 downto 0) -- saida do registrador 2
     );
 end entity;

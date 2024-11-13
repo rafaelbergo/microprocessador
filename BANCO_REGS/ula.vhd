@@ -1,7 +1,3 @@
--- VHDL #2 - ULA(prazo: 06/11/2024)
-
--- Alunos:
-
 -- Giovane Limas Salvi - 2355841 - s71
 -- Rafael Carvalho Bergo - 2387190 - s71
 
