@@ -14,7 +14,7 @@ entity banco_regs is
         data_wr:        in unsigned(15 downto 0);
         reg_wr:         in unsigned(3 downto 0); -- escolhe em qual registrador escrever
         sel_reg:     in unsigned(3 downto 0); -- escolhe qual registrador ler
-        data_out:    out unsigned(15 downto 0); -- saida do registrador
+        data_out:    out unsigned(15 downto 0) -- saida do registrador
     );
 end entity;
 

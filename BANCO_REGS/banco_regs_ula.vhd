@@ -67,14 +67,14 @@ begin
         clk => clk,
         rst => rst,
         wr_en => wr_en,
-        data_wr => ula_result, -- 
+        data_wr => ula_result,
         reg_wr => reg_wr,
         sel_reg => sel_reg,
-        data_out => data_out_reg,
+        data_out => data_out_reg
     ); 
 
     ula_uut: ula port map(
-        entr0 => operando_acumulador, -- primeira entrada vai ser a saida do acumulador
+        entr0 => data_out_acumulador, -- primeira entrada vai ser a saida do acumulador
         entr1 => operando_banco, -- segunda entrada vai ser a constante ou a saida do registrador 2
         operation => ula_operation_sel, 
         result => ula_result
@@ -93,7 +93,7 @@ begin
 
     -- Operando 2 = Banco de registradores
     operando_banco <= operando_cte when operando_selector = '0' else -- se o operando_selector for 0, o operando vai ser a constante 
-                data_out when operando_selector = '1' else -- se o operando_selector for 1, o operando vai 
+                data_out_reg when operando_selector = '1' else -- se o operando_selector for 1, o operando vai ser a saida do registrador
                 "0000000000000000";    
 
     -- pino de saida extra para debug
