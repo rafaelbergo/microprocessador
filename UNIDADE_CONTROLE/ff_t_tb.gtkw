@@ -1,0 +1,27 @@
+[*]
+[*] GTKWave Analyzer v3.3.103 (w)1999-2019 BSI
+[*] Thu Nov 14 20:02:51 2024
+[*]
+[dumpfile] "/home/rafael/Desktop/UTFPR/2024.2/Arquitetura E Organização De Computadores/microprocessador/UNIDADE_CONTROLE/ff_t_tb.ghw"
+[dumpfile_mtime] "Thu Nov 14 20:01:30 2024"
+[dumpfile_size] 2276
+[savefile] "/home/rafael/Desktop/UTFPR/2024.2/Arquitetura E Organização De Computadores/microprocessador/UNIDADE_CONTROLE/ff_t_tb.gtkw"
+[timestart] 0
+[size] 3072 1568
+[pos] -1037 -485
+*-29.564610 1635000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] top.
+[treeopen] top.ff_t_tb.
+[sst_width] 372
+[signals_width] 110
+[sst_expanded] 1
+[sst_vpaned_height] 466
+@28
+top.ff_t_tb.uut.clk
+top.ff_t_tb.uut.rst
+top.ff_t_tb.uut.t
+top.ff_t_tb.uut.q
+@29
+top.ff_t_tb.uut.q_not
+[pattern_trace] 1
+[pattern_trace] 0

@@ -7,6 +7,9 @@ entity maq_estados is
          rst    : in std_logic;
          estado : out unsigned(1 downto 0) 
    );
+end entity;
 
 architecture a_maq_estados of maq_estados is
+begin
     
+end architecture;

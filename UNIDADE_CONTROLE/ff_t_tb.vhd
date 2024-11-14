@@ -2,32 +2,41 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity rom_tb is
-end;
+entity ff_t_tb is
+end entity;
 
-architecture a_rom_tb of rom_tb is 
-    component rom is port(
-        clk      : in std_logic;
-        endereco : in unsigned(6 downto 0);
-        dado     : out unsigned(16 downto 0) 
+architecture a_ff_tb of ff_t_tb is
+    component ff_t port(
+        clk : in std_logic;
+        rst : in std_logic;
+        t   : in std_logic;
+        q   : out std_logic;
+        q_not : out std_logic
     );
     end component;
 
     constant period_time:                   time := 100 ns; 
     signal finished:                        std_logic := '0';
 
-    signal clk:       std_logic;
-    signal endereco:  unsigned(6 downto 0);
-    signal dado :     unsigned(16 downto 0);
-    
-begin
+    signal clk, rst, t, q, q_not : std_logic;
 
-    uut: rom port map(
+begin
+    uut: ff_t port map(
         clk => clk,
-        endereco => endereco,
-        dado => dado
+        rst => rst,
+        t   => t,
+        q   => q,
+        q_not => q_not
     );
-           
+
+    reset_global: process
+    begin
+        rst <= '1';
+        wait for period_time*2; -- espera 2 clocks, pra garantir
+        rst <= '0';
+        wait;
+    end process;
+
     sim_time_proc: process
     begin
         wait for 10 us;
@@ -49,16 +58,18 @@ begin
     
     process
     begin
-        wait for 200 ns;
-        endereco <= "0000000";
+
+        t <= '0';
 
         wait for 100 ns;
-        endereco <= "0000001";
+        rst <= '1';
 
         wait for 100 ns;
-        endereco <= "0000110";
+        t <= '1';
+
+        wait for 100 ns;
+        t <= '0';
 
         wait;
     end process;
-    
 end architecture;
