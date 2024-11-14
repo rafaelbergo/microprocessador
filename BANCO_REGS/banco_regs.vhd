@@ -11,7 +11,7 @@ entity banco_regs is
         clk:            in std_logic;
         rst:            in std_logic;
         wr_en:          in std_logic;
-        data_wr:        in unsigned(15 downto 0);
+        data_wr:        in unsigned(15 downto 0); -- dado a ser escrito no registrador
         reg_wr:         in unsigned(3 downto 0); -- escolhe em qual registrador escrever
         sel_reg:     in unsigned(3 downto 0); -- escolhe qual registrador ler
         data_out:    out unsigned(15 downto 0) -- saida do registrador
@@ -35,15 +35,15 @@ architecture a_banco_regs of banco_regs is
 
 begin
 
-    wr_en_regs(0) <= '1' when reg_wr = "0000" else '0';
-    wr_en_regs(1) <= '1' when reg_wr = "0001" else '0';
-    wr_en_regs(2) <= '1' when reg_wr = "0010" else '0';
-    wr_en_regs(3) <= '1' when reg_wr = "0011" else '0';
-    wr_en_regs(4) <= '1' when reg_wr = "0100" else '0';
-    wr_en_regs(5) <= '1' when reg_wr = "0101" else '0';
-    wr_en_regs(6) <= '1' when reg_wr = "0110" else '0';
-    wr_en_regs(7) <= '1' when reg_wr = "0111" else '0';
-    wr_en_regs(8) <= '1' when reg_wr = "1000" else '0';
+    wr_en_regs(0) <= '1' when reg_wr = "0000" and wr_en = '1' else '0';
+    wr_en_regs(1) <= '1' when reg_wr = "0001" and wr_en = '1' else '0';
+    wr_en_regs(2) <= '1' when reg_wr = "0010" and wr_en = '1' else '0';
+    wr_en_regs(3) <= '1' when reg_wr = "0011" and wr_en = '1' else '0';
+    wr_en_regs(4) <= '1' when reg_wr = "0100" and wr_en = '1' else '0';
+    wr_en_regs(5) <= '1' when reg_wr = "0101" and wr_en = '1' else '0';
+    wr_en_regs(6) <= '1' when reg_wr = "0110" and wr_en = '1' else '0';
+    wr_en_regs(7) <= '1' when reg_wr = "0111" and wr_en = '1' else '0';
+    wr_en_regs(8) <= '1' when reg_wr = "1000" and wr_en = '1' else '0';
 
     reg0: regs16bits port map(
         clk => clk,

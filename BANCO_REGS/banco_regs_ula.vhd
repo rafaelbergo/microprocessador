@@ -67,7 +67,7 @@ begin
         clk => clk,
         rst => rst,
         wr_en => wr_en,
-        data_wr => ula_result,
+        data_wr => data_wr,
         reg_wr => reg_wr,
         sel_reg => sel_reg,
         data_out => data_out_reg

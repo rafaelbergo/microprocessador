@@ -20,17 +20,9 @@ architecture a_banco_regs_ula_tb of banco_regs_ula_tb is
     );
     end component;
 
-    component acumulador is port(
-        clk:            in std_logic;
-        rst:            in std_logic;
-        wr_en:          in std_logic;
-        data_in:        in unsigned(15 downto 0);
-        data_out:       out unsigned(15 downto 0)
-    );
-    end component;
-
-    constant period_time:                   time := 100 ns;
+    constant period_time:                   time := 100 ns; 
     signal finished:                        std_logic := '0';
+
     signal clk, rst, wr_en:                 std_logic;
     signal data_wr:                         unsigned(15 downto 0);
     signal reg_wr:                          unsigned(3 downto 0);
@@ -54,16 +46,7 @@ begin
         operando_selector => operando_selector,
         out_ula => out_ula
     );
-
-    acum: acumulador port map(
-        clk => clk,
-        rst => rst,
-        wr_en => wr_en,
-        data_in => ula_out,
-        data_out => acumulador_out
-    );
-
-        
+       
     reset_global: process
     begin
         rst <= '1';
@@ -94,33 +77,35 @@ begin
     process
     begin
         wait for 200 ns;
-        wr_en <= '1'; 
-
-        sel_reg <= "0000"; -- r1 = 0
-        operando_selector <= '0'; -- operando = constante
-        operando_cte <= "0000000000000010"; -- 2
+        
+         -- adiciona o valor 2 no registrador r1
+        sel_reg <= "0001";
+        operando_selector <= '0'; -- operando = reg
+        operando_cte <= "0000000000000011"; -- 3
         ula_operation_sel <= "00"; -- operacao = soma
+
+        wr_en <= '1';
         reg_wr <= "0001"; -- escreve no r1
-        -- esperado r1 = 2
+        data_wr <= "0000000000000111"; -- 2
 
         wait for 100 ns;
-        operando_selector <= '0'; -- operando = constante
-        operando_cte <= "0000000000001001"; -- 9
-        ula_operation_sel <= "00"; -- operacao = soma
-        reg_wr <= "0010"; -- escreve no r1
-        -- esperado out_ula = 9
 
+        sel_reg <= "0001";
+        operando_selector <= '1';
+        wr_en <= '0';
+        
         wait for 100 ns;
-        sel_reg <= "0001"; -- r1 = 2
-        operando_selector <= '1'; -- operando = r2
-        ula_operation_sel <= "00"; -- operacao = soma
-        reg_wr <= "0011"; -- escreve no r3 
-        -- esperado out_ula = 2+9 = 11
 
+        wr_en <= '1';
+        data_wr <= "0000000000001000";
+        reg_wr <= "0101";
+        
+        wait for 100 ns;
+        wr_en <= '0';
+        sel_reg <= "0101";
 
 
         wait;
     end process;
     
-
 end architecture;
