@@ -15,11 +15,7 @@ entity ula is port (
 
     overflow_flag:      out std_logic;
     carry_flag:         out std_logic;
-    zero_flag:          out std_logic;
-
-    greater_than_flag:  out std_logic;
-    less_than_flag :    out std_logic;
-    equal_to_flag :     out std_logic
+    zero_flag:          out std_logic
 );
 end entity;
 
@@ -71,10 +67,5 @@ begin
                             ((entr0(15) = '0' and entr1(15) = '1' and sub(15) = '1') or 
                              (entr0(15) = '1' and entr1(15) = '0' and sub(15) = '0')))
                    else '0';
-
-    -- flag comparação
-    greater_than_flag <= '1' when entr0 > entr1 else '0'; -- entr0 > entr1
-    less_than_flag <= '1' when entr0 < entr1 else '0'; -- entr0 < entr1
-    equal_to_flag <= '1' when entr0 = entr1 else '0'; -- entr0 == entr1
 
 end architecture;

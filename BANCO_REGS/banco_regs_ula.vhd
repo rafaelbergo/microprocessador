@@ -51,10 +51,7 @@ architecture a_banco_regs_ula of banco_regs_ula is
             result:             out unsigned(15 downto 0);
             overflow_flag:      out std_logic;
             carry_flag:         out std_logic;
-            zero_flag:          out std_logic;
-            greater_than_flag:  out std_logic;
-            less_than_flag :    out std_logic;
-            equal_to_flag :     out std_logic
+            zero_flag:          out std_logic
         );
     end component;
 

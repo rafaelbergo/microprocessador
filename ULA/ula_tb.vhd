@@ -24,18 +24,13 @@ architecture a_ula_tb of ula_tb is
 
         overflow_flag:      out std_logic;
         carry_flag:         out std_logic;
-        zero_flag:          out std_logic;
-
-        greater_than_flag:  out std_logic;
-        less_than_flag :    out std_logic;
-        equal_to_flag :     out std_logic
+        zero_flag:          out std_logic
         );
     end component;
 
     signal entr0, entr1, result:                                unsigned(15 downto 0);
     signal operation:                                           unsigned(1 downto 0);
     signal overflow_flag, carry_flag, zero_flag:                std_logic;
-    signal greater_than_flag, less_than_flag, equal_to_flag:    std_logic;
 
 begin
         uut: ula port map(
@@ -45,10 +40,7 @@ begin
             result => result,
             overflow_flag => overflow_flag,
             carry_flag=> carry_flag,      
-            zero_flag=> zero_flag,       
-            greater_than_flag=> greater_than_flag,
-            less_than_flag => less_than_flag,  
-            equal_to_flag => equal_to_flag
+            zero_flag=> zero_flag       
         );
 
     process
@@ -112,17 +104,17 @@ begin
         operation <= "00"; -- soma
         entr0 <= "0000000000000001";
         entr1 <= "0000000000000001";
-        wait for 50 ns; -- esperado equal_to_flag = 1
+        wait for 50 ns;
 
         operation <= "00"; -- soma
         entr0 <= "0000000000001001";
         entr1 <= "0000000000000001";
-        wait for 50 ns; -- esperado greater_than_flag = 1
+        wait for 50 ns;
 
         operation <= "00"; -- soma
         entr0 <= "0000000000000001";
         entr1 <= "0000000000001001";
-        wait for 50 ns; -- esperado less_than_flag = 1
+        wait for 50 ns;
         
         wait;
     end process;

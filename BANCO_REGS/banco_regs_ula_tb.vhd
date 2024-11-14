@@ -104,7 +104,6 @@ begin
         wr_en <= '0';
         sel_reg <= "0101";
 
-
         wait;
     end process;
     

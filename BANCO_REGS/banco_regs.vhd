@@ -49,7 +49,7 @@ begin
         clk => clk,
         rst => rst,
         wr_en => wr_en_regs(0),
-        data_in => "0000000000000000",
+        data_in => data_wr,
         data_out => r0_out
     );
 
