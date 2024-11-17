@@ -2,29 +2,27 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity ff_t_tb is
+entity maq_estados_tb is
 end entity;
 
-architecture a_ff_tb of ff_t_tb is
-    component ff_t port(
+architecture a_maq_estadosb of maq_estados_tb is
+    component maq_estados port(
         clk : in std_logic;
         rst : in std_logic;
-        t   : in std_logic;
-        q   : out std_logic
+        estado   : out std_logic
     );
     end component;
 
     constant period_time:                   time := 100 ns; 
     signal finished:                        std_logic := '0';
 
-    signal clk, rst, t, q : std_logic;
+    signal clk, rst, estado : std_logic;
 
 begin
-    uut: ff_t port map(
+    uut: maq_estados port map(
         clk => clk,
         rst => rst,
-        t   => t,
-        q   => q
+        estado => estado
     );
 
     reset_global: process
@@ -58,18 +56,7 @@ begin
     begin
         wait for 200 ns;
 
-        t <= '1';
-        wait for 200 ns;
-        t <= '0';
-
-        wait for 200 ns;
-        t <= '1';
-
-        wait for 200 ns;
-        t <= '0';
-
-        wait for 200 ns;
-        t <= '1';
+        
 
         wait;
     end process;
