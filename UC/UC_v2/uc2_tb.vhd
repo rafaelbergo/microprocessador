@@ -19,8 +19,7 @@ architecture a_uc2_tb of uc2_tb is
     signal finished             : std_logic := '0';
     signal data                 : unsigned(16 downto 0);
     signal clk, rst             : std_logic;
-    signal wr_en                : std_logic := '1';
-    signal toggle               : std_logic := '0';
+    signal wr_en, toggle        : std_logic := '1';
 
 begin
 

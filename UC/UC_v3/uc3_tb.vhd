@@ -19,8 +19,7 @@ architecture a_uc3_tb of uc3_tb is
     signal finished             : std_logic := '0';
     signal data                 : unsigned(16 downto 0);
     signal clk, rst             : std_logic;
-    signal wr_en                : std_logic := '1';
-    signal toggle               : std_logic := '0';
+    signal wr_en, toggle        : std_logic := '1';
 
 begin
 
@@ -61,30 +60,7 @@ begin
     process
     begin
         wait for 200 ns;
-        toggle <= '1'; -- altero state
 
-        wait for 100 ns;
-        toggle <= '0'; -- mantem
-
-        wait for 100 ns;
-        toggle <= '1'; -- altera state
-
-        wait for 100 ns;
-        toggle <= '0'; -- mantem
-
-        -- 2 parte
-
-        wait for 100 ns;
-        toggle <= '1'; -- altera state
-
-        wait for 100 ns;
-        toggle <= '0'; -- mantem
-
-        wait for 250 ns;
-        toggle <= '1'; -- altera state
-
-        wait for 250 ns;
-        toggle <= '0'; -- mantem
         wait;
     end process;
 end architecture;
