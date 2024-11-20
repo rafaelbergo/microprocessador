@@ -2,28 +2,30 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity ff_t_tb is
+entity state_machine_tb is
 end entity;
 
-architecture a_ff_tb of ff_t_tb is
-    component ff_t port(
-        clk : in std_logic;
-        rst : in std_logic;
-        t   : in std_logic;
-        q   : out std_logic
-    );
+architecture a_state_machine_tb of state_machine_tb is
+
+    constant period_time:       time := 100 ns; 
+    signal finished, toggle:    std_logic := '0';
+    signal clk, rst, state:      std_logic;
+
+    component state_machine 
+        port(
+            clk:    in std_logic;
+            toggle: in std_logic;
+            rst:    in std_logic;
+            state:  out std_logic
+        );
     end component;
 
-    constant period_time:                   time := 100 ns; 
-    signal finished:                        std_logic := '0';
-    signal clk, rst, t, q : std_logic;
-
 begin
-    uut: ff_t port map(
+    uut: state_machine port map(
         clk => clk,
+        toggle => toggle,
         rst => rst,
-        t   => t,
-        q   => q
+        state => state
     );
 
     reset_global: process
@@ -55,20 +57,14 @@ begin
     
     process
     begin
-        wait for 200 ns;
-
-        t <= '1';
-        wait for 200 ns;
-        t <= '0';
+        wait for 100 ns;
+        toggle <= '1';
 
         wait for 200 ns;
-        t <= '1';
+        toggle <= '0';
 
-        wait for 200 ns;
-        t <= '0';
-
-        wait for 200 ns;
-        t <= '1';
+        wait for 100 ns;
+        toggle <= '1';
 
         wait;
     end process;

@@ -14,9 +14,9 @@ architecture a_ff_tb of ff_t_tb is
     );
     end component;
 
-    constant period_time:                   time := 100 ns; 
-    signal finished:                        std_logic := '0';
-    signal clk, rst, t, q : std_logic;
+    constant period_time:       time := 100 ns; 
+    signal finished:            std_logic := '0';
+    signal clk, rst, t, q:      std_logic;
 
 begin
     uut: ff_t port map(
