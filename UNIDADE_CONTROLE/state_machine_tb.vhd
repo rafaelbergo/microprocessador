@@ -1,32 +1,37 @@
+-- VHDL #4 - UNIDADE DE CONTROLE(prazo: 20/11/2024)
+
+-- Alunos:
+
+-- Giovane Limas Salvi - 2355841 - s71
+-- Rafael Carvalho Bergo - 2387190 - s71
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity uc1_tb is
+entity state_machine_tb is
 end;
 
-architecture a_uc1_tb of uc1_tb is
-    component uc1 is port (
+architecture a_state_machine_tb of state_machine_tb is
+    component state_machine is port (
         clk:        in std_logic;
         rst:        in std_logic;
-        wr_en:      in std_logic;
-        data:       out unsigned(16 downto 0)
+        toggle:     in std_logic;
+        state:      out std_logic
     );
     end component;
 
-    constant period_time        : time := 100 ns;
-    signal finished             : std_logic := '0';
-    signal data                 : unsigned(16 downto 0);
-    signal clk, rst             : std_logic;
-    signal wr_en                : std_logic := '1';
+    constant period_time            : time := 100 ns;
+    signal finished                 : std_logic := '0';
+    signal clk, rst, toggle, state  : std_logic;
 
 begin
 
-    uut : uc1 port map(
+    uut : state_machine port map(
         clk => clk,
         rst => rst,
-        wr_en => wr_en,
-        data => data
+        toggle => toggle,
+        state => state
     );
 
     reset_global: process
@@ -57,6 +62,15 @@ begin
 
     process
     begin
+        wait for 200 ns;
+        toggle <= '1';
+
+        wait for 600 ns;
+        toggle <= '0';
+
+        wait for 150 ns;
+        toggle <= '1';
+
         wait;
     end process;
 end architecture;

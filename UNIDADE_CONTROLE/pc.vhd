@@ -2,25 +2,35 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity pc is
-   port(clk    : in std_logic;
-        rst    : in std_logic;
-        wr_en  : in std_logic;
-        data_in: in unsigned(6 downto 0);
-        data_out: out unsigned(6 downto 0)
-   );
+entity pc is port (
+    clk:        in std_logic;
+    rst:        in std_logic;
+    wr_en:      in std_logic;
+    data_in:    in unsigned(6 downto 0);
+    data_out:   out unsigned(6 downto 0)
+);
 end entity;
 
 architecture a_pc of pc is
-    begin
-        process(clk, rst)
-        begin
-            if rst = '1' then
-                data_out <= "0000000";
-            elsif rising_edge(clk) then
-                if wr_en = '1' then
-                    data_out <= data_in;
-                end if;
-            end if;
-        end process;
+
+    component regs7bits is
+        port (
+            clk:        in std_logic;
+            rst:        in std_logic;
+            wr_en:      in std_logic;
+            data_in:    in unsigned(6 downto 0);
+            data_out:   out unsigned(6 downto 0) := "0000000"
+        );
+    end component;
+
+begin
+
+    uut: regs7bits port map (
+        clk => clk,
+        rst => rst,
+        wr_en => wr_en,
+        data_in => data_in,
+        data_out => data_out
+    );
+
 end architecture;

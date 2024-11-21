@@ -1,34 +1,35 @@
+-- VHDL #4 - UNIDADE DE CONTROLE(prazo: 20/11/2024)
+
+-- Alunos:
+
+-- Giovane Limas Salvi - 2355841 - s71
+-- Rafael Carvalho Bergo - 2387190 - s71
+
+------------------------------------------------------------------
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity uc3_tb is
+entity top_level_tb is
 end;
 
-architecture a_uc3_tb of uc3_tb is
-    component uc3 is port (
-        clk:        in std_logic;
-        rst:        in std_logic;
-        toggle:     in std_logic;
-        wr_en:      in std_logic;
-        data:       out unsigned(16 downto 0)
+architecture a_top_level_tb of top_level_tb is
+    component top_level is port (
+        clk             : in std_logic;
+        rst             : in std_logic
     );
     end component;
 
-    constant period_time        : time := 100 ns;
-    signal finished             : std_logic := '0';
-    signal data                 : unsigned(16 downto 0);
-    signal clk, rst             : std_logic;
-    signal wr_en, toggle        : std_logic := '1';
+    constant period_time                        : time := 100 ns;
+    signal finished                             : std_logic := '0';
+    signal clk, rst                             : std_logic;
 
 begin
 
-    uut : uc3 port map(
+    uut : top_level port map(
         clk => clk,
-        rst => rst,
-        toggle => toggle,
-        wr_en => wr_en,
-        data => data
+        rst => rst
     );
 
     reset_global: process
@@ -59,8 +60,6 @@ begin
 
     process
     begin
-        wait for 200 ns;
-
         wait;
     end process;
 end architecture;
