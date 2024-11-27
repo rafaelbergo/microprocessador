@@ -23,9 +23,8 @@ architecture a_decode of decode is
         clk             : in std_logic;
         rst             : in std_logic;
         instruction     : in unsigned(16 downto 0);
-        wr_out_ula      : out std_logic;
         rd_rom          : out std_logic;
-        wr_const        : out std_logic;
+        wr_banco        : out std_logic;
         wr_pc           : out std_logic;
         mov_a_reg       : out std_logic;
         mov_reg_a       : out std_logic;
@@ -55,13 +54,12 @@ architecture a_decode of decode is
     );
     end component;
 
-    signal wr_out_ula, wr_const, mov_a_reg, mov_reg_a: std_logic;
-    signal wr_banco : std_logic;
+    signal mov_a_reg, mov_reg_a: std_logic;
     signal banco_out: unsigned(15 downto 0);
     signal data_in_ula: unsigned(15 downto 0);
     signal value_wr_banco: unsigned(15 downto 0);
     signal op_ula : std_logic;
-    signal wr_acum : std_logic;
+    signal wr_acum, wr_banco : std_logic;
     signal acum_in, acum_out: unsigned(15 downto 0);
 
 begin
@@ -70,9 +68,8 @@ begin
         clk => clk,
         rst => rst,
         instruction => instruction,
-        wr_out_ula => wr_out_ula,
         rd_rom => rd_rom,
-        wr_const => wr_const,
+        wr_banco => wr_banco,
         wr_pc => wr_pc,
         mov_a_reg => mov_a_reg,
         mov_reg_a => mov_reg_a,
@@ -82,7 +79,6 @@ begin
     );
 
     value_wr_banco <= acum_out when mov_reg_a = '1' else "000000000" & instruction(6 downto 0);
-    wr_banco <= '1' when wr_const = '1' or mov_reg_a = '1' else '0';
 
     banco_uut : banco_regs port map (
         clk => clk,
