@@ -6,21 +6,28 @@ entity top_level_tb is
 end;
 
 architecture a_top_level_tb of top_level_tb is
+    
     component fetch is port (
         clk                 : in std_logic;
         rst                 : in std_logic;
-        pc_wr_en            : in std_logic;
         rd_rom              : in std_logic;
-        instruction         : out unsigned(15 downto 0)
+        wr_pc               : in std_logic;
+        jump_en             : in std_logic;
+        instruction         : out unsigned(16 downto 0)
     );
     end component;
 
     component decode is port (
         clk             : in std_logic;
         rst             : in std_logic;
-        instruction     : in unsigned(15 downto 0);
+        instruction     : in unsigned(16 downto 0);
         rd_rom          : out std_logic;
-        operation       : out unsigned(1 downto 0)
+        wr_pc           : out std_logic;
+        jump_en         : out std_logic;
+        operation       : out unsigned(1 downto 0);
+        entr1           : out unsigned(15 downto 0);
+        entr0           : out unsigned(15 downto 0);
+        ula_out         : in unsigned(15 downto 0)
     );
     end component;
 
@@ -37,17 +44,21 @@ architecture a_top_level_tb of top_level_tb is
     constant period_time            : time := 100 ns;
     signal finished                 : std_logic := '0';
     signal clk, rst                 : std_logic;
-    signal pc_wr_en, rd_rom         : std_logic;
-    signal instruction, result      : unsigned(15 downto 0);
+    signal wr_pc, rd_rom            : std_logic;
+    signal instruction              : unsigned(16 downto 0);
+    signal result                   : unsigned(15 downto 0);
     signal operation                : unsigned(1 downto 0);
+    signal entr1, entr0             : unsigned(15 downto 0);
+    signal jump_en                  : std_logic;
 
 begin
 
     fetch_uut : fetch port map(
         clk => clk,
         rst => rst,
-        pc_wr_en => pc_wr_en,
         rd_rom => rd_rom,
+        wr_pc => wr_pc,
+        jump_en => jump_en,
         instruction => instruction
     );
 
@@ -55,15 +66,20 @@ begin
         clk => clk,
         rst => rst,
         rd_rom => rd_rom,
+        wr_pc => wr_pc,
+        jump_en => jump_en,
         instruction => instruction,
-        operation => operation
+        operation => operation,
+        entr1 => entr1,
+        entr0 => entr0,
+        ula_out => result
     );
 
     execute_uut : execute port map(
         clk => clk,
         rst => rst,
-        entr0 => instruction,
-        entr1 => instruction,
+        entr0 => entr0,
+        entr1 => entr1,
         operation => operation,
         result => result
     );
@@ -97,8 +113,7 @@ begin
     process
     begin
         wait for 200 ns;
-        pc_wr_en <= '1';
-
+        
         wait;
     end process;
 end architecture;

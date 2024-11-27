@@ -31,7 +31,7 @@ architecture a_banco_regs of banco_regs is
     end component;
     
     signal wr_en_regs : std_logic_vector(8 downto 0);
-    signal r0_out, r1_out, r2_out, r3_out, r4_out, r5_out, r6_out, r7_out, r8_out : unsigned(15 downto 0) := "0000000000000000";
+    signal r0_out, r1_out, r2_out, r3_out, r4_out, r5_out, r6_out, r7_out, r8_out : unsigned(15 downto 0);
 
 begin
 

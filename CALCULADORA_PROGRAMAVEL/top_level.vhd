@@ -82,7 +82,7 @@ architecture a_top_level of top_level is
     signal reg_wr_banco_regs, sel_reg_banco_regs : unsigned(3 downto 0); -- sinal de escrita e selecao do banco de registradores
     
     -- acumulador
-    signal wr_en_acumulador : std_logic;
+    signal mov_a_regulador : std_logic;
     signal data_in_acumulador, data_out_acumulador : unsigned(15 downto 0); -- sinal de entrada e saida do acumulador
 
     -- ula
@@ -118,7 +118,7 @@ begin
     acumulador_tl: acumulador port map(
         clk => clk,
         rst => rst,
-        wr_en => wr_en_acumulador,
+        wr_en => mov_a_regulador,
         data_in => data_in_acumulador,
         data_out => data_out_acumulador
     );

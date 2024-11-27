@@ -6,11 +6,15 @@ entity uc is
     port (
         clk             : in std_logic;
         rst             : in std_logic;
-        instruction     : in unsigned(15 downto 0);
-        wr_en_regs      : out std_logic;
+        instruction     : in unsigned(16 downto 0);
+        wr_out_ula      : out std_logic;
         rd_rom          : out std_logic;
-        rd_banco_regs   : out std_logic;
-        load_reg        : out std_logic;
+        wr_const        : out std_logic;
+        wr_pc           : out std_logic;
+        mov_a_reg       : out std_logic;
+        mov_reg_a       : out std_logic;
+        op_ula          : out std_logic;
+        jump_en         : out std_logic;
         operation       : out unsigned(1 downto 0)
     );
 end entity;
@@ -35,20 +39,25 @@ begin
         state => state
     );
 
-    opcode <= instruction(15 downto 12);
+    opcode <= instruction(16 downto 13);
 
     -- fetch
     rd_rom <= '1' when state = "00" else '0';
-    -- decode
-    rd_banco_regs <= '1' when state = "01" else '0';
     -- execute
-    wr_en_regs <= '1' when state = "10" else '0';
+    wr_out_ula <= '1' when (opcode = "0100" or opcode = "0110") and state = "10" else '0';
 
-    load_reg <= '1' when opcode = "0010" and state = "01" else '0';
+    mov_a_reg <= '1' when opcode = "0011" and state = "01" and instruction(12) = '1' and rst = '0' else '0';
+    mov_reg_a <= '1' when opcode = "0011" and state = "01" and instruction(12) = '0' and rst = '0' else '0';
+    
+    op_ula <= '1' when (opcode = "0100" and state = "10") or (opcode = "0110" and state = "10") else '0';
 
+    wr_const <= '1' when opcode = "0010" and state = "01" and rst = '0' else '0';
+    wr_pc <= '1' when state = "00" and rst = '0' else '0';
+
+    jump_en <= '1' when opcode = "1010" and state = "01" else '0';
 
     operation <=    "00" when opcode = "0100" and state = "10" else -- ADD
-                    "01" when opcode = "0100" and state = "10" else -- SUB
+                    "01" when opcode = "0110" and state = "10" else -- SUB
                     "10" when opcode = "0101" and state = "10" else -- SUBI
                     "11";                                           -- CMPR
 
