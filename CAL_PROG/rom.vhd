@@ -6,7 +6,8 @@ entity rom is
     port (
         clk:        in std_logic;
         address:    in unsigned(6 downto 0);
-        data:       out unsigned(15 downto 0)
+        data:       out unsigned(15 downto 0);
+        rd_rom:     in std_logic
     );
 end entity;
 
@@ -33,7 +34,7 @@ architecture a_rom of rom is
 begin
     process(clk)
     begin
-        if rising_edge(clk) then 
+        if rising_edge(clk) and rd_rom = '1' then 
             data <= content_rom(to_integer(address));
         end if;
     end process;

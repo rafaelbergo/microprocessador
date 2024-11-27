@@ -6,19 +6,21 @@ entity fetch is
     port( 
         clk                 : in std_logic;
         rst                 : in std_logic;
-        pc_wr_en            : in std_logic
+        pc_wr_en            : in std_logic;
+        rd_rom              : in std_logic;
+        instruction         : out unsigned(15 downto 0)
     );
 end entity;
 
 architecture a_fetch of fetch is
 
-    signal instruction                     : unsigned(15 downto 0);
     signal data_in_pc                      : unsigned(6 downto 0) := "0000000";
     signal data_out_pc                     : unsigned(6 downto 0);
 
     component rom is port (
         clk:        in std_logic;
         address:    in unsigned(6 downto 0);
+        rd_rom:     in std_logic;
         data:       out unsigned(15 downto 0)
     );
     end component;
@@ -37,7 +39,8 @@ begin
     rom_uut: rom port map (
         clk => clk,
         address => data_out_pc,
-        data => instruction
+        data => instruction,
+        rd_rom => rd_rom
     );
 
     pc_uut: pc port map (
