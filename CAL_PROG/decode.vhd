@@ -80,8 +80,8 @@ begin
         operation => operation,
         is_nop => is_nop
     );
-
-    value_wr_banco <= acum_out when mov_reg_a = '1' else "000000000" & instruction(6 downto 0);
+    -- TODO arrumar a constante positiva e negativa
+    value_wr_banco <= acum_out when mov_reg_a = '1' else "111111111" & instruction(6 downto 0);
 
     banco_uut : banco_regs port map (
         clk => clk,
@@ -104,7 +104,10 @@ begin
         data_out => acum_out
     );
 
-    entr0 <= banco_out when op_ula = '1' else "0000000000000000";
-    entr1 <= acum_out when op_ula = '1' else "0000000000000000";
+    --entr0 <= acum_out when op_ula = '1' else "0000000000000000";
+    --entr1 <= banco_out when op_ula = '1' else "0000000000000000";
+
+    entr0 <= acum_out;
+    entr1 <= banco_out;
 
 end architecture;

@@ -25,5 +25,5 @@ NOP:  0000 x xxxx xxxx xxxx
 20   LD R5, 0
 21   MOV A, R5
 22   MOV R3, A
-23   JUMP 3 
+23   JUMP 2 
 24   LD R3, 0
