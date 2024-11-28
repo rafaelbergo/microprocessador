@@ -30,7 +30,8 @@ architecture a_decode of decode is
         mov_reg_a       : out std_logic;
         op_ula          : out std_logic;
         jump_en         : out std_logic;
-        operation       : out unsigned(1 downto 0)
+        operation       : out unsigned(1 downto 0);
+        is_nop          : out std_logic
     );
     end component;
 
@@ -61,6 +62,7 @@ architecture a_decode of decode is
     signal op_ula : std_logic;
     signal wr_acum, wr_banco : std_logic;
     signal acum_in, acum_out: unsigned(15 downto 0);
+    signal is_nop: std_logic;
 
 begin
 
@@ -75,7 +77,8 @@ begin
         mov_reg_a => mov_reg_a,
         op_ula => op_ula,
         jump_en => jump_en,
-        operation => operation
+        operation => operation,
+        is_nop => is_nop
     );
 
     value_wr_banco <= acum_out when mov_reg_a = '1' else "000000000" & instruction(6 downto 0);
@@ -91,7 +94,7 @@ begin
     );
 
     acum_in <= banco_out when mov_a_reg = '1' else ula_out;
-    wr_acum <= '1' when mov_a_reg = '1' or op_ula = '1' else '0';
+    wr_acum <= '1' when ((mov_a_reg = '1' or op_ula = '1') and is_nop = '0') else '0';
 
     acum_uut : acumulador port map (
         clk => clk,

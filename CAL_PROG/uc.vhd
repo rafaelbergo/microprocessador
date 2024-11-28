@@ -14,7 +14,8 @@ entity uc is
         mov_reg_a       : out std_logic;
         op_ula          : out std_logic;
         jump_en         : out std_logic;
-        operation       : out unsigned(1 downto 0)
+        operation       : out unsigned(1 downto 0);
+        is_nop          : out std_logic
     );
 end entity;
 
@@ -30,6 +31,7 @@ architecture a_uc of uc is
     signal state : unsigned(1 downto 0);
     signal opcode: unsigned(3 downto 0);
     signal mov_reg_a_s : std_logic;
+    signal is_nop_s : std_logic;
 
 begin
 
@@ -42,6 +44,7 @@ begin
     opcode <= instruction(16 downto 13);
 
     -- fetch
+    is_nop_s <= '1' when opcode = "0000" and state = "01" else '0';
     rd_rom <= '1' when state = "00" else '0';
 
     mov_a_reg <= '1' when opcode = "0011" and state = "01" and instruction(12) = '1' and rst = '0' else '0';
@@ -50,7 +53,7 @@ begin
 
     op_ula <= '1' when (opcode = "0100" and state = "10") or (opcode = "0110" and state = "10") else '0';
 
-    wr_banco <= '1' when (opcode = "0010" and state = "01" and rst = '0') or mov_reg_a_s = '1' else '0';
+    wr_banco <= '1' when ((opcode = "0010" and state = "01" and rst = '0') or mov_reg_a_s = '1') and is_nop_s = '0' else '0';
     wr_pc <= '1' when state = "00" and rst = '0' else '0';
 
     jump_en <= '1' when opcode = "1010" and state = "01" else '0';
@@ -60,9 +63,6 @@ begin
                     "10" when opcode = "0101" and state = "10" else -- SUBI
                     "11";                                           -- CMPR
 
-    
-
-
-    
+    is_nop <= is_nop_s;
 
 end architecture;
