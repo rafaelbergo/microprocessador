@@ -6,24 +6,25 @@ a    identifica se o registrador de destino é o acumulador (1) ou registrador (
 
 MSB b16                   b0 LSB
       |                   |
-ADD:  0100 a ssss xxxx xxxx
-SUB:  0110 a dddd ssss cccc
-LD:   0010 a dddd xxxx xxxx
-JUMP: 1010 a xxxx xccc cccc
-MOV:  0011 a ssss xxxx xxxx
 NOP:  0000 x xxxx xxxx xxxx
+LD:   0010 a dddd xxxx xxxx
+MOV:  0011 a ssss xxxx xxxx
+ADD:  0100 a ssss xxxx xxxx
+SUBI: 0101 a xxxx xxxx cccc -- corrigir numero de bits
+SUB:  0110 a xxxx ??cc cccc
+MOV:  1000 a dddd ssss xxxx (MOV R,R)
+JUMP: 1010 a xxxx xccc cccc
+BLO:  1011 a xxxx cccc cccc
 
-1    LD R3, 5
-2    LD R4, 8
-3    MOV A, R3
-4    ADD A, R4
-5    MOV R5, A
-6    LD R7, 1
-7    SUB A, R7
-8    MOV R5, A
-9    JUMP 20
-20   LD R5, 0
-21   MOV A, R5
-22   MOV R3, A
-23   JUMP 2 
-24   LD R3, 0
+0    LD R3, 0
+1    LD R4, 0
+2    MOV A, R3
+3    ADD A, R4
+4    MOV R4, A
+5    MOV A, R3
+6    LD R3, 1
+7    ADD A, R3
+8    MOV R3, A
+9    SUBI A, 30
+10   BLO -9
+11   MOV R5, R4
