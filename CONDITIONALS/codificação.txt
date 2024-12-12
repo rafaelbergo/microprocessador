@@ -14,17 +14,17 @@ SUBI: 0101 a xxxx xccc cccc
 SUB:  0110 a dddd sscc cccc
 MOV:  1000 a dddd ssss xxxx (MOV R,R)
 JUMP: 1010 a xxxx xccc cccc
-BLO:  1011 a xxxx cccc cccc
+BLO:  1011 a xxxx xccc cccc
 
-0    LD R3, 0
-1    LD R4, 0
-2    MOV A, R3
-3    ADD A, R4
-4    MOV R4, A
-5    MOV A, R3
-6    LD R3, 1
-7    ADD A, R3
-8    MOV R3, A
-9    SUBI A, 30
-10   BLO -9
-11   MOV R5, R4
+0   LD R3, 0
+1   LD R4, 0
+2   MOV A, R3
+3   ADD A, R4
+4   MOV R4, A
+5   MOV A, R3
+6   LD R3, 1
+7   ADD A, R3
+8   MOV R3, A
+9   SUBI A, 30
+10  BLO -9
+11  MOV R5, R4

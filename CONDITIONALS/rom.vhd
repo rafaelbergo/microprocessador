@@ -30,7 +30,6 @@ end entity;
 -- 1110
 -- 1111
 
-
 architecture a_rom of rom is
     type mem is array (0 to 127) of unsigned(16 downto 0);
     constant content_rom: mem := (
