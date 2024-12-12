@@ -113,9 +113,6 @@ begin
         data_out => acum_out
     );
 
-    --entr0 <= acum_out when op_ula = '1' else "0000000000000000";
-    --entr1 <= banco_out when op_ula = '1' else "0000000000000000";
-
     entr0 <= acum_out;
     entr1 <= "000000000" & instruction(6 downto 0) when op_const = '1' else banco_out;
 
