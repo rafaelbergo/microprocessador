@@ -16,7 +16,8 @@ entity decode is
         entr0           : out unsigned(15 downto 0);
         ula_out         : in unsigned(15 downto 0);
 
-        wr_ram       : out std_logic
+        wr_ram          : out std_logic;
+        data_out_ram    : in unsigned(15 downto 0)
     );
 end entity;
 
@@ -31,7 +32,6 @@ architecture a_decode of decode is
         wr_banco        : out std_logic;
         wr_pc           : out std_logic;
         mov_reg         : out std_logic_vector(2 downto 0);
-        --op_ula          : out std_logic;
         op_const        : out std_logic;
         jump_en         : out std_logic;
         jump_abs        : out std_logic;
@@ -39,7 +39,8 @@ architecture a_decode of decode is
         is_nop          : out std_logic;
 
         wr_ram          : out std_logic;
-        wr_acum         : out std_logic
+        wr_acum         : out std_logic;
+        mov_a_ram       : out std_logic
     );
     end component;
 
@@ -69,7 +70,7 @@ architecture a_decode of decode is
     signal wr_acum, op_const : std_logic;
     signal wr_banco : std_logic;
     signal acum_in, acum_out: unsigned(15 downto 0);
-    signal is_nop: std_logic;
+    signal is_nop, mov_a_ram: std_logic;
     signal reg_wr: unsigned(3 downto 0);
 
 begin
@@ -83,15 +84,14 @@ begin
         wr_banco => wr_banco,
         wr_pc => wr_pc,
         mov_reg => mov_reg,
-        --op_ula => op_ula,
         op_const => op_const,
         jump_en => jump_en,
         jump_abs => jump_abs,
         operation => operation,
         is_nop => is_nop,
-
         wr_ram => wr_ram,
-        wr_acum => wr_acum
+        wr_acum => wr_acum,
+        mov_a_ram => mov_a_ram
     );
     -- TODO arrumar a constante positiva e negativa
     value_wr_banco <=   acum_out when mov_reg(1) = '1' else 
@@ -110,7 +110,9 @@ begin
         data_out => banco_out
     );
 
-    acum_in <= banco_out when mov_reg(2) = '1' else ula_out;
+    acum_in <=  banco_out when mov_reg(2) = '1' else 
+                data_out_ram when mov_a_ram = '1' else 
+                ula_out;
     --wr_acum <= '1' when ((mov_reg(2) = '1' or op_ula = '1') and is_nop = '0') else '0';
 
     acum_uut : acumulador port map (

@@ -36,7 +36,8 @@ architecture a_processador_tb of processador_tb is
         entr0           : out unsigned(15 downto 0);
         ula_out         : in unsigned(15 downto 0);
 
-        wr_ram       : out std_logic
+        wr_ram          : out std_logic;
+        data_out_ram    : in unsigned(15 downto 0)
     );
     end component;
 
@@ -64,7 +65,7 @@ architecture a_processador_tb of processador_tb is
     signal entr1, entr0             : unsigned(15 downto 0);
     signal jump_en                  : std_logic;
     signal jump_abs                 : std_logic;
-    signal wr_ram                : std_logic;
+    signal wr_ram                   : std_logic;
     signal data_out_ram             : unsigned(15 downto 0);
     signal endereco_ram             : unsigned(6 downto 0);
 
@@ -92,8 +93,8 @@ begin
         entr1 => entr1,
         entr0 => entr0,
         ula_out => result,
-
-        wr_ram => wr_ram
+        wr_ram => wr_ram,
+        data_out_ram => data_out_ram
     );
 
     -- Endereço da RAM: offset + valor do reg do banco
