@@ -10,14 +10,17 @@ entity decode is
         rd_rom          : out std_logic;
         wr_pc           : out std_logic;
         jump_en         : out std_logic;
-        jump_abs        : out std_logic;
         operation       : out unsigned(1 downto 0);
         entr1           : out unsigned(15 downto 0);
         entr0           : out unsigned(15 downto 0);
         ula_out         : in unsigned(15 downto 0);
-
         wr_ram          : out std_logic;
-        data_out_ram    : in unsigned(15 downto 0)
+        data_out_ram    : in unsigned(15 downto 0);
+        wr_cmpr         : out std_logic;
+        carry_flag      : in std_logic;
+        zero_flag       : in std_logic;
+        blo             : out std_logic;
+        ble             : out std_logic
     );
 end entity;
 
@@ -34,13 +37,16 @@ architecture a_decode of decode is
         mov_reg         : out std_logic_vector(2 downto 0);
         op_const        : out std_logic;
         jump_en         : out std_logic;
-        jump_abs        : out std_logic;
         operation       : out unsigned(1 downto 0);
         is_nop          : out std_logic;
-
         wr_ram          : out std_logic;
         wr_acum         : out std_logic;
-        mov_a_ram       : out std_logic
+        mov_a_ram       : out std_logic;
+        wr_cmpr         : out std_logic;
+        carry_flag      : in std_logic;
+        zero_flag       : in std_logic;
+        blo             : out std_logic;
+        ble             : out std_logic
     );
     end component;
 
@@ -86,12 +92,16 @@ begin
         mov_reg => mov_reg,
         op_const => op_const,
         jump_en => jump_en,
-        jump_abs => jump_abs,
         operation => operation,
         is_nop => is_nop,
         wr_ram => wr_ram,
         wr_acum => wr_acum,
-        mov_a_ram => mov_a_ram
+        mov_a_ram => mov_a_ram,
+        wr_cmpr => wr_cmpr,
+        carry_flag => carry_flag,
+        zero_flag => zero_flag,
+        blo => blo,
+        ble => ble
     );
     -- TODO arrumar a constante positiva e negativa
     value_wr_banco <=   acum_out when mov_reg(1) = '1' else 
@@ -113,7 +123,6 @@ begin
     acum_in <=  banco_out when mov_reg(2) = '1' else 
                 data_out_ram when mov_a_ram = '1' else 
                 ula_out;
-    --wr_acum <= '1' when ((mov_reg(2) = '1' or op_ula = '1') and is_nop = '0') else '0';
 
     acum_uut : acumulador port map (
         clk => clk,
@@ -123,9 +132,7 @@ begin
         data_out => acum_out
     );
 
-    --entr0 <= acum_out when op_ula = '1' else "0000000000000000";
-    --entr1 <= banco_out when op_ula = '1' else "0000000000000000";
-
+    --TODO: ARRUMAR PAR AO CMPR
     entr0 <= acum_out;
     entr1 <= "000000000" & instruction(6 downto 0) when op_const = '1' else banco_out;
 

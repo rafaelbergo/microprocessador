@@ -12,7 +12,6 @@ entity ula is port (
     entr1:              in unsigned(15 downto 0);
     operation:          in unsigned(1 downto 0);
     result:             out unsigned(15 downto 0);
-
     overflow_flag:      out std_logic;
     carry_flag:         out std_logic;
     zero_flag:          out std_logic
@@ -29,7 +28,8 @@ signal result_s:                            unsigned(15 downto 0);
 begin
     -- operacoes com valores unsigned
     sum <= entr0 + entr1;
-    sub <= entr0 + (not(entr1) + "0000000000000001");
+    --sub <= entr0 + (not(entr1) + "0000000000000001");
+    sub <= entr0 + entr1;
     op_and <= entr0 and entr1;
     op_or <= entr0 or entr1;
 
@@ -47,10 +47,11 @@ begin
              
     -- flag carry
     sum_17_bits <= ('0' & entr0) + ('0' & entr1);
-    sub_17_bits <= ('0' & entr0) - ('0' & entr1);
+    --sub_17_bits <= ('0' & entr0) - ('0' & entr1);
 
     carry_sum <= sum_17_bits(16);
-    carry_sub <= sub_17_bits(16);
+    --carry_sub <= sub_17_bits(16);
+    carry_sub <= '0' when entr1 <= entr0 else '1';
 
     carry_flag <=   carry_sum when operation = "00" else
                     carry_sub when operation = "01" else

@@ -13,13 +13,17 @@ entity uc is
         wr_pc           : out std_logic;
         mov_reg         : out std_logic_vector(2 downto 0);
         jump_en         : out std_logic;
-        jump_abs        : out std_logic;
         op_const        : out std_logic;
         operation       : out unsigned(1 downto 0);
         is_nop          : out std_logic;
         wr_ram          : out std_logic;
         wr_acum         : out std_logic;
-        mov_a_ram       : out std_logic
+        mov_a_ram       : out std_logic;
+        wr_cmpr         : out std_logic;
+        carry_flag      : in std_logic;
+        zero_flag       : in std_logic;
+        blo             : out std_logic;
+        ble             : out std_logic
     );
 end entity;
 
@@ -67,23 +71,22 @@ begin
     mov_reg(2) <= mov_a_reg_s;
 
     op_ula_s <= '1' when state = "10" and (opcode = "0100" or opcode = "0110" or opcode = "0101") else '0';
-    --op_ula_s <= '1' when (opcode = "0100" or opcode = "0110" or opcode = "0101") else '0';
-    --op_ula <= op_ula_s;
     op_const <= '1' when opcode = "0101" else '0';
 
     wr_banco <= '1' when ((opcode = "0010" and state = "01" and rst = '0') or mov_reg_a_s = '1' or mov_reg_reg = '1') and is_nop_s = '0' else '0';
     wr_pc <= '1' when state = "00" and rst = '0' else '0';
 
-    -- condiction BLO: A < 0
-    blo_s <= '1' when opcode = "1011" and signed(acum) < "0000000000000000" else '0';
-    ble_s <= '1' when opcode = "1001" and signed(acum) >= "0000000000000000" else '0'; 
+    wr_cmpr <= '1' when (opcode="1100" and state = "10") else '0';
+
+    -- salto condicional
+    blo <= '1' when (opcode="1011" and carry_flag = '1' and state="10") else '0';
+    ble <= '1' when (opcode="1001" and (carry_flag = '1' or zero_flag='1') and state="10") else '0';
 
     -- jumps enable
-    jump_en <= '1' when state = "01" and (opcode = "1010" or blo_s = '1' or ble_s = '1') else '0';
-    jump_abs <= '1' when state = "01" and opcode = "1010" else '0';
+    jump_en <= '1' when (state = "01" and opcode = "1010") else '0';
 
     operation <=    "00" when opcode = "0100" and state = "10" else -- ADD
-                    "01" when opcode = "0110" and state = "10" else -- SUB
+                    "01" when (opcode = "0110" or opcode= "1100") and state = "10" else -- SUB, CMPR
                     "10" when opcode = "0101" and state = "10" else -- SUBI
                     "11";                                           -- CMPR
 

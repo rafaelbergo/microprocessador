@@ -18,8 +18,9 @@ architecture a_processador_tb of processador_tb is
         rd_rom              : in std_logic;
         wr_pc               : in std_logic;
         jump_en             : in std_logic;
-        jump_abs            : in std_logic;
-        instruction         : out unsigned(16 downto 0)
+        instruction         : out unsigned(16 downto 0);
+        blo                 : in std_logic;
+        ble                 : in std_logic
     );
     end component;
 
@@ -30,14 +31,18 @@ architecture a_processador_tb of processador_tb is
         rd_rom          : out std_logic;
         wr_pc           : out std_logic;
         jump_en         : out std_logic;
-        jump_abs        : out std_logic;
         operation       : out unsigned(1 downto 0);
         entr1           : out unsigned(15 downto 0);
         entr0           : out unsigned(15 downto 0);
         ula_out         : in unsigned(15 downto 0);
 
         wr_ram          : out std_logic;
-        data_out_ram    : in unsigned(15 downto 0)
+        data_out_ram    : in unsigned(15 downto 0);
+        wr_cmpr         : out std_logic;
+        carry_flag      : in std_logic;
+        zero_flag       : in std_logic;
+        blo             : out std_logic;
+        ble             : out std_logic
     );
     end component;
 
@@ -48,10 +53,12 @@ architecture a_processador_tb of processador_tb is
         entr1           : in unsigned(15 downto 0);
         operation       : in unsigned(1 downto 0);
         result          : out unsigned(15 downto 0);
-
-        wr_ram       : in std_logic;
+        wr_ram          : in std_logic;
         data_out_ram    : out unsigned(15 downto 0);
-        endereco_ram    : in unsigned(6 downto 0)
+        endereco_ram    : in unsigned(6 downto 0);
+        carry_flag      : out std_logic;
+        zero_flag       : out std_logic;
+        wr_cmpr         : in std_logic
     );
     end component;
 
@@ -64,10 +71,12 @@ architecture a_processador_tb of processador_tb is
     signal operation                : unsigned(1 downto 0);
     signal entr1, entr0             : unsigned(15 downto 0);
     signal jump_en                  : std_logic;
-    signal jump_abs                 : std_logic;
     signal wr_ram                   : std_logic;
     signal data_out_ram             : unsigned(15 downto 0);
     signal endereco_ram             : unsigned(6 downto 0);
+    signal carry_flag, zero_flag    : std_logic;
+    signal wr_cmpr                  : std_logic;
+    signal ble, blo                 : std_logic;
 
 begin
 
@@ -77,8 +86,9 @@ begin
         rd_rom => rd_rom,
         wr_pc => wr_pc,
         jump_en => jump_en,
-        jump_abs => jump_abs,
-        instruction => instruction
+        instruction => instruction,
+        ble => ble,
+        blo => blo
     );
 
     decode_uut : decode port map(
@@ -87,14 +97,18 @@ begin
         rd_rom => rd_rom,
         wr_pc => wr_pc,
         jump_en => jump_en,
-        jump_abs => jump_abs,
         instruction => instruction,
         operation => operation,
         entr1 => entr1,
         entr0 => entr0,
         ula_out => result,
         wr_ram => wr_ram,
-        data_out_ram => data_out_ram
+        data_out_ram => data_out_ram,
+        wr_cmpr => wr_cmpr,
+        carry_flag => carry_flag,
+        zero_flag => zero_flag,
+        blo => blo,
+        ble => ble
     );
 
     -- Endereço da RAM: offset + valor do reg do banco
@@ -109,7 +123,10 @@ begin
         result => result,
         wr_ram => wr_ram,
         data_out_ram => data_out_ram,
-        endereco_ram => endereco_ram
+        endereco_ram => endereco_ram,
+        carry_flag => carry_flag,
+        zero_flag => zero_flag,
+        wr_cmpr => wr_cmpr
     );
 
     reset_global: process

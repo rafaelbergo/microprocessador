@@ -9,8 +9,9 @@ entity fetch is
         rd_rom              : in std_logic;
         wr_pc               : in std_logic;
         jump_en             : in std_logic;
-        jump_abs            : in std_logic;
-        instruction         : out unsigned(16 downto 0)
+        instruction         : out unsigned(16 downto 0);
+        blo                 : in std_logic;
+        ble                 : in std_logic
     );
 end entity;
 
@@ -19,7 +20,7 @@ architecture a_fetch of fetch is
     signal data_in_pc                      : unsigned(6 downto 0) := "0000000";
     signal data_out_pc                     : unsigned(6 downto 0);
     signal instruction_s                   : unsigned(16 downto 0);
-    signal wr_pc_s                         : std_logic;
+    signal wr_pc_s                         : std_logic;                
 
     component rom is port (
         clk:        in std_logic;
@@ -56,8 +57,10 @@ begin
     );
 
     instruction <= instruction_s;
-    wr_pc_s <= '1' when wr_pc = '1' or jump_en = '1' else '0';
-    data_in_pc <=   instruction_s(6 downto 0) when jump_en = '1' and jump_abs = '1' else 
-                    data_out_pc + instruction_s(6 downto 0) when jump_en = '1' else
+    wr_pc_s <= '1' when (wr_pc='1' or jump_en='1' or ble='1' or blo='1') else '0';
+
+    -- TODO: otimizar o uso do ble e blo(subir somente 1 pino)
+    data_in_pc <=   instruction_s(6 downto 0) when jump_en='1' else
+                    data_out_pc + instruction_s(6 downto 0) when (ble='1' or blo='1') else 
                     data_out_pc + "0000001";
 end architecture;
