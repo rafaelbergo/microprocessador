@@ -35,7 +35,7 @@ architecture a_rom of rom is
     type mem is array (0 to 127) of unsigned(16 downto 0);
     constant content_rom: mem := (
         -- -- INICIALIZA OS VALORES DE R0 E R1 E A MEMORIA
-        0   =>  B"0010_0_0000_00000000", -- LD R0,0     -- R0 = 1
+        0   =>  B"0010_0_0000_00000000", -- LD R0,0     -- R0 = 0
         1   =>  B"0010_0_0001_00000001", -- LD R1,1     -- R1 = 1
         2   =>  B"0010_0_1000_00001111", -- LD R8,15    -- R7 = 15
         3   =>  B"0010_0_0010_00000000", -- LD R2,0     -- POSICAO
@@ -63,6 +63,13 @@ architecture a_rom of rom is
         21  =>  B"0011_0_0010_00000000", -- MOV R2,A
         22  =>  B"1100_0_1000_00000000", -- CMPR A,R8
         23  =>  B"1011_0_0000_11110111", -- BLO -9
+
+        24  =>  B"0111_0_0011_00000000", -- LW A,0(R3) - Vai carregar A = 1
+        25  =>  B"0011_0_0100_00000000", -- MOV R4,A
+        26  =>  B"0111_0_0011_00000100", -- LW A,4(R3)
+        27  =>  B"0100_0_0100_00000000", -- ADD A,R4
+        28  =>  B"0111_0_0100_00000000", -- LW A,0(R4)
+        29  =>  B"0001_0_0100_00011000", -- SW A,24(R4)
         others => (others => '0')
     );
 
