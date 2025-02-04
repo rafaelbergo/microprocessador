@@ -1,0 +1,107 @@
+dddd  identifica o registrador destino
+ssss  identifica o registrador fonte
+cccc identifica a constante em complemento de 2
+xxxx é irrelevante
+a    identifica se o registrador de destino é o acumulador (1) ou registrador (0)
+
+MSB b16                   b0 LSB
+      |                   |
+ADD:  0100 x ssss xxxx xxxx
+SUB:  0110 x ssss xxxx xxxx
+SUBI: 0101 x ssss xccc cccc
+LD:   0010 x dddd xxxx xxxx
+JUMP: 1010 x xxxx xccc cccc
+MOV:  0011 a ssss xxxx xxxx
+MOV:  1000 x ssss dddd xxxx
+NOP:  0000 x xxxx xxxx xxxx
+SW:   0001 x dddd xccc cccc
+LW:   0111 x ssss xccc cccc
+BLE:  1001 x xxxx xxxx xxxx
+BLO:  1011 x xxxx xxxx xxxx
+CMPR: 1100 x ssss xxxx xxxx
+
+
+0     LD R0,2
+1     LD R1,1
+2     LD R2,32
+3     LD R3,2
+4     LD R4,4
+5     LD R8,0
+6     MOV A,R0
+
+7     SW A,0(R0)
+8     ADD A,R1
+9     MOV R0,A
+10    CMPR A,R2
+11    BLO -5
+12    JUMP 23
+
+13    MOV A,R3
+14    ADD A,R1
+15    MOV R3,A
+16    JUMP 23
+
+17    MOV A,R4
+18    ADD A,R1
+19    MOV R4,A
+20    JUMP 24
+
+21    SW R8,0(R4)
+22    JUMP 29
+
+23    LW R5,0(R3)
+24    LW R6,0(R4)
+25    MOV A,R5
+26    CMPR A,R6
+27    BLO -7
+28    MOV A,R6
+29    ADD A,R1
+30    MOV R6,A
+31    CMPR A,R2
+32    BLO -16
+
+33    JUMP 13
+34    CMPR A,R2
+35    BLO -23
+
+
+
+
+
+
+
+
+
+
+
+
+0   LD R0,0  
+1   LD R1,1    
+2   LD R8,15   
+3   LD R2,0   
+4   LD R3,1   
+5   MOV A,R0
+6   SW A,0(R2) 
+7   MOV A,R1
+8   SW A,1(R2) 
+9   JUMP 15
+10  LW A,0(R2)
+11  MOV R0,A
+12  LW A,1(R2)
+13  MOV R1,A
+14  JUMP 16
+15  JUMP 10    
+16  MOV A,R0
+17  ADD A,R1
+18  SW A,2(R2)
+19  MOV A,R2
+20  ADD A,R3
+21  MOV R2,A
+22  CMPR A,R8
+23  BLO -9
+24  LW A,0(R3)
+25  MOV R4,A
+26  LW A,4(R3)
+27  ADD A,R4
+28  LW A,0(R4)
+29  SW A,24(R4)
