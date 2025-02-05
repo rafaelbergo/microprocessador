@@ -7,10 +7,15 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity processador_tb is
-end;
+entity processador is
+    port (
+        clk         : in std_logic;
+        rst         : in std_logic;
+        primo       : out unsigned(15 downto 0)
+    );
+end entity;
 
-architecture a_processador_tb of processador_tb is
+architecture a_processador of processador is
     
     component fetch is port (
         clk                 : in std_logic;
@@ -35,7 +40,6 @@ architecture a_processador_tb of processador_tb is
         entr1           : out unsigned(15 downto 0);
         entr0           : out unsigned(15 downto 0);
         ula_out         : in unsigned(15 downto 0);
-
         wr_ram          : out std_logic;
         data_out_ram    : in unsigned(15 downto 0);
         wr_cmpr         : out std_logic;
@@ -62,9 +66,6 @@ architecture a_processador_tb of processador_tb is
     );
     end component;
 
-    constant period_time            : time := 100 ns;
-    signal finished                 : std_logic := '0';
-    signal clk, rst                 : std_logic;
     signal wr_pc, rd_rom            : std_logic;
     signal instruction              : unsigned(16 downto 0);
     signal result                   : unsigned(15 downto 0);
@@ -77,6 +78,7 @@ architecture a_processador_tb of processador_tb is
     signal carry_flag, zero_flag    : std_logic;
     signal wr_cmpr                  : std_logic;
     signal ble, blo                 : std_logic;
+    signal primo_s                  : unsigned(15 downto 0);
 
 begin
 
@@ -129,36 +131,7 @@ begin
         wr_cmpr => wr_cmpr
     );
 
-    reset_global: process
-    begin
-        rst <= '1';
-        wait for period_time*2;
-        rst <= '0';
-        wait;
-    end process;
+    primo_s <= data_out_ram when instruction="01110001100000000" and data_out_ram/="0000000000000000" else primo_s;
+    primo <= primo_s;
 
-    sim_time_proc: process
-    begin
-        wait for 50 us;         -- <== TEMPO TOTAL DA SIMULACAO!!!
-        finished <= '1';
-        wait;
-    end process sim_time_proc;
-
-    clk_proc: process
-    begin                       -- gera clock até que sim_time_proc termine
-        while finished /= '1' loop
-            clk <= '0';
-            wait for period_time/2;
-            clk <= '1';
-            wait for period_time/2;
-        end loop;
-        wait;
-    end process clk_proc;
-
-    process
-    begin
-        wait for 200 ns;
-        
-        wait;
-    end process;
 end architecture;

@@ -33,6 +33,8 @@ begin
     op_and <= entr0 and entr1;
     op_or <= entr0 or entr1;
 
+    -- 1111 
+
     -- resultado da operação
     result_s <= sum when operation = "00" else -- soma
                 sub when operation = "01" or operation = "10" else -- subtração
@@ -47,14 +49,12 @@ begin
              
     -- flag carry
     sum_17_bits <= ('0' & entr0) + ('0' & entr1);
-    --sub_17_bits <= ('0' & entr0) - ('0' & entr1);
 
     carry_sum <= sum_17_bits(16);
-    --carry_sub <= sub_17_bits(16);
-    carry_sub <= '0' when entr1 <= entr0 else '1';
+    carry_sub <= '0' when signed(entr1) <= signed(entr0) else '1';
 
     carry_flag <=   carry_sum when operation = "00" else
-                    carry_sub when operation = "01" else
+                    carry_sub when (operation = "01" or operation = "10") else
                     '0';
 
     -- flag overflow

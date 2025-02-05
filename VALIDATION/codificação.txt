@@ -20,7 +20,6 @@ BLE:  1001 x xxxx xxxx xxxx
 BLO:  1011 x xxxx xxxx xxxx
 CMPR: 1100 x ssss xxxx xxxx
 
-
 0     LD R0,2
 1     LD R1,1
 2     LD R2,32
@@ -33,75 +32,41 @@ CMPR: 1100 x ssss xxxx xxxx
 8     ADD A,R1
 9     MOV R0,A
 10    CMPR A,R2
-11    BLO -5
-12    JUMP 23
+11    BLE -5
+12    JUMP 21
 
-13    MOV A,R3
-14    ADD A,R1
-15    MOV R3,A
-16    JUMP 23
+13    MOV A,R8
+14    SW A,0(R4)
+15    JUMP 26
 
-17    MOV A,R4
-18    ADD A,R1
-19    MOV R4,A
-20    JUMP 24
+16    SUB A,R5
+17    CMPR A,R5
+18    BLO 6
+19    BLE -7
+20    JUMP 16
 
-21    SW R8,0(R4)
-22    JUMP 29
+21    LW A,0(R3)
+22    MOV R5,A
+23    LW A,0(R4)
+24    JUMP 16
 
-23    LW R5,0(R3)
-24    LW R6,0(R4)
-25    MOV A,R5
-26    CMPR A,R6
-27    BLO -7
-28    MOV A,R6
-29    ADD A,R1
-30    MOV R6,A
-31    CMPR A,R2
-32    BLO -16
+25    MOV A,R4
+26    ADD A,R1
+27    MOV R4,A
+28    CMPR A,R2
+29    BLE -7
 
-33    JUMP 13
-34    CMPR A,R2
-35    BLO -23
-
-
-
-
-
-
-
-
-
-
-
-
-0   LD R0,0  
-1   LD R1,1    
-2   LD R8,15   
-3   LD R2,0   
-4   LD R3,1   
-5   MOV A,R0
-6   SW A,0(R2) 
-7   MOV A,R1
-8   SW A,1(R2) 
-9   JUMP 15
-10  LW A,0(R2)
-11  MOV R0,A
-12  LW A,1(R2)
-13  MOV R1,A
-14  JUMP 16
-15  JUMP 10    
-16  MOV A,R0
-17  ADD A,R1
-18  SW A,2(R2)
-19  MOV A,R2
-20  ADD A,R3
-21  MOV R2,A
-22  CMPR A,R8
-23  BLO -9
-24  LW A,0(R3)
-25  MOV R4,A
-26  LW A,4(R3)
-27  ADD A,R4
-28  LW A,0(R4)
-29  SW A,24(R4)
+30    MOV A,R3
+31    ADD A,R1
+32    MOV R3,A
+33    CMPR A,R2
+34    BLO 1
+35    JUMP 44
+36    LW A,0(R3)
+37    CMPR A,R8
+38    BLE -9
+39    MOV A,R3
+40    ADD A,R1
+41    ADD A,R1
+42    MOV R4,A
+43    JUMP 21
