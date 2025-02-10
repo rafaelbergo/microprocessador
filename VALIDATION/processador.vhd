@@ -22,10 +22,9 @@ architecture a_processador of processador is
         rst                 : in std_logic;
         rd_rom              : in std_logic;
         wr_pc               : in std_logic;
-        jump_en             : in std_logic;
+        jump_abs             : in std_logic;
         instruction         : out unsigned(16 downto 0);
-        blo                 : in std_logic;
-        ble                 : in std_logic
+        jump_re             : in std_logic
     );
     end component;
 
@@ -35,18 +34,17 @@ architecture a_processador of processador is
         instruction     : in unsigned(16 downto 0);
         rd_rom          : out std_logic;
         wr_pc           : out std_logic;
-        jump_en         : out std_logic;
+        jump_abs        : out std_logic;
         operation       : out unsigned(1 downto 0);
         entr1           : out unsigned(15 downto 0);
         entr0           : out unsigned(15 downto 0);
         ula_out         : in unsigned(15 downto 0);
         wr_ram          : out std_logic;
         data_out_ram    : in unsigned(15 downto 0);
-        wr_cmpr         : out std_logic;
         carry_flag      : in std_logic;
         zero_flag       : in std_logic;
-        blo             : out std_logic;
-        ble             : out std_logic
+        jump_re         : out std_logic;
+        wr_flag         : out std_logic
     );
     end component;
 
@@ -62,7 +60,7 @@ architecture a_processador of processador is
         endereco_ram    : in unsigned(6 downto 0);
         carry_flag      : out std_logic;
         zero_flag       : out std_logic;
-        wr_cmpr         : in std_logic
+        wr_flag         : in std_logic
     );
     end component;
 
@@ -71,14 +69,14 @@ architecture a_processador of processador is
     signal result                   : unsigned(15 downto 0);
     signal operation                : unsigned(1 downto 0);
     signal entr1, entr0             : unsigned(15 downto 0);
-    signal jump_en                  : std_logic;
+    signal jump_abs                 : std_logic;
     signal wr_ram                   : std_logic;
     signal data_out_ram             : unsigned(15 downto 0);
     signal endereco_ram             : unsigned(6 downto 0);
     signal carry_flag, zero_flag    : std_logic;
-    signal wr_cmpr                  : std_logic;
-    signal ble, blo                 : std_logic;
     signal primo_s                  : unsigned(15 downto 0);
+    signal jump_re                  : std_logic;
+    signal wr_flag                  : std_logic;
 
 begin
 
@@ -87,10 +85,9 @@ begin
         rst => rst,
         rd_rom => rd_rom,
         wr_pc => wr_pc,
-        jump_en => jump_en,
+        jump_abs => jump_abs,
         instruction => instruction,
-        ble => ble,
-        blo => blo
+        jump_re => jump_re
     );
 
     decode_uut : decode port map(
@@ -98,7 +95,7 @@ begin
         rst => rst,
         rd_rom => rd_rom,
         wr_pc => wr_pc,
-        jump_en => jump_en,
+        jump_abs => jump_abs,
         instruction => instruction,
         operation => operation,
         entr1 => entr1,
@@ -106,11 +103,10 @@ begin
         ula_out => result,
         wr_ram => wr_ram,
         data_out_ram => data_out_ram,
-        wr_cmpr => wr_cmpr,
         carry_flag => carry_flag,
         zero_flag => zero_flag,
-        blo => blo,
-        ble => ble
+        jump_re => jump_re,
+        wr_flag => wr_flag
     );
 
     -- Endereço da RAM: offset + valor do reg do banco
@@ -128,7 +124,7 @@ begin
         endereco_ram => endereco_ram,
         carry_flag => carry_flag,
         zero_flag => zero_flag,
-        wr_cmpr => wr_cmpr
+        wr_flag => wr_flag
     );
 
     primo_s <= data_out_ram when instruction="01110001100000000" and data_out_ram/="0000000000000000" else primo_s;

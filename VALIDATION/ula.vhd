@@ -33,14 +33,12 @@ begin
     op_and <= entr0 and entr1;
     op_or <= entr0 or entr1;
 
-    -- 1111 
 
     -- resultado da operação
-    result_s <= sum when operation = "00" else -- soma
-                sub when operation = "01" or operation = "10" else -- subtração
-                --op_and when operation = "10" else -- and
-                op_or when operation = "11" else -- or
-                "0000000000000000";
+    result_s <= sum when operation = "00" else      -- soma
+                sub when operation = "01" else      -- subtração
+                op_and when operation = "10" else   -- and
+                op_or;                              -- or
 
     result <= result_s;
 
@@ -54,7 +52,7 @@ begin
     carry_sub <= '0' when signed(entr1) <= signed(entr0) else '1';
 
     carry_flag <=   carry_sum when operation = "00" else
-                    carry_sub when (operation = "01" or operation = "10") else
+                    carry_sub when operation = "01" else
                     '0';
 
     -- flag overflow

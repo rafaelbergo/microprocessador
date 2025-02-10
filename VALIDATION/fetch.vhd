@@ -8,10 +8,9 @@ entity fetch is
         rst                 : in std_logic;
         rd_rom              : in std_logic;
         wr_pc               : in std_logic;
-        jump_en             : in std_logic;
+        jump_abs            : in std_logic;
         instruction         : out unsigned(16 downto 0);
-        blo                 : in std_logic;
-        ble                 : in std_logic
+        jump_re             : in std_logic
     );
 end entity;
 
@@ -57,10 +56,9 @@ begin
     );
 
     instruction <= instruction_s;
-    wr_pc_s <= '1' when (wr_pc='1' or jump_en='1' or ble='1' or blo='1') else '0';
+    wr_pc_s <= '1' when (wr_pc='1' or jump_abs='1' or jump_re='1') else '0';
 
-    -- TODO: otimizar o uso do ble e blo(subir somente 1 pino)
-    data_in_pc <=   instruction_s(6 downto 0) when jump_en='1' else
-                    data_out_pc + instruction_s(6 downto 0) when (ble='1' or blo='1') else 
+    data_in_pc <=   instruction_s(6 downto 0) when jump_abs='1' else
+                    data_out_pc + instruction_s(6 downto 0) when jump_re='1' else 
                     data_out_pc + "0000001";
 end architecture;

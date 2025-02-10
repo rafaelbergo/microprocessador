@@ -15,7 +15,7 @@ entity execute is
         endereco_ram    : in unsigned(6 downto 0);
         carry_flag      : out std_logic;
         zero_flag       : out std_logic;
-        wr_cmpr         : in std_logic
+        wr_flag         : in std_logic
     );
 end entity;
 
@@ -44,16 +44,12 @@ architecture a_execute of execute is
     );
     end component;
 
-    component cmpr is port (
-        clk:            in std_logic;
-        rst:            in std_logic;
-        wr_en:          in std_logic;
-        carry_in:       in std_logic;
-        overflow_in:    in std_logic;
-        zero_in:        in std_logic;
-        carry_out:      out std_logic;
-        overflow_out:   out std_logic;
-        zero_out:       out std_logic
+    component regsflag is port (
+        clk:        in std_logic;
+        rst:        in std_logic;
+        wr_en:      in std_logic;
+        data_in:    in std_logic;
+        data_out:   out std_logic
     );
     end component;
 
@@ -77,16 +73,28 @@ begin
         dado_out    => data_out_ram
     );
 
-    cmpr_uut: cmpr port map (
-        clk             => clk,
-        rst             => rst,
-        wr_en           => wr_cmpr,
-        carry_in        => carry_flag_s,
-        overflow_in     => overflow_flag_s,
-        zero_in         => zero_flag_s,
-        carry_out       => carry_flag,
-        overflow_out    => overflow_flag,
-        zero_out        => zero_flag
+    regs_carry_flag: regsflag port map(
+        clk         => clk,
+        rst         => rst,
+        wr_en       => wr_flag,
+        data_in     => carry_flag_s,
+        data_out    => carry_flag
+    );
+
+    regs_overflow_flag: regsflag port map(
+        clk         => clk,
+        rst         => rst,
+        wr_en       => wr_flag,
+        data_in     => overflow_flag_s,
+        data_out    => overflow_flag
+    );
+
+    regs_zero_flag: regsflag port map(
+        clk         => clk,
+        rst         => rst,
+        wr_en       => wr_flag,
+        data_in     => zero_flag_s,
+        data_out    => zero_flag
     );
 
 end architecture;
