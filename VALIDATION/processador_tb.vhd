@@ -15,21 +15,23 @@ architecture a_processador_tb of processador_tb is
     component processador is port (
         clk             : in std_logic;
         rst             : in std_logic;
-        primo           : out unsigned(15 downto 0)
+        primo           : out unsigned(15 downto 0);
+        divisor         : out unsigned(15 downto 0)
     );
     end component;
 
     constant period_time            : time := 100 ns;
     signal finished                 : std_logic := '0';
     signal clk, rst                 : std_logic;
-    signal primo                    : unsigned(15 downto 0);
+    signal primo, divisor           : unsigned(15 downto 0);
 
 begin
 
     processador_uut : processador port map(
         clk => clk,
         rst => rst,
-        primo => primo
+        primo => primo,
+        divisor => divisor
     );
 
     reset_global: process
@@ -42,7 +44,7 @@ begin
 
     sim_time_proc: process
     begin
-        wait for 2000 us;         -- <== TEMPO TOTAL DA SIMULACAO!!!
+        wait for 4000 us;         -- <== TEMPO TOTAL DA SIMULACAO!!!
         finished <= '1';
         wait;
     end process sim_time_proc;

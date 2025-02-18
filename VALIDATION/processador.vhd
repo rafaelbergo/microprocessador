@@ -11,7 +11,8 @@ entity processador is
     port (
         clk         : in std_logic;
         rst         : in std_logic;
-        primo       : out unsigned(15 downto 0)
+        primo       : out unsigned(15 downto 0);
+        divisor     : out unsigned(15 downto 0)
     );
 end entity;
 
@@ -74,7 +75,7 @@ architecture a_processador of processador is
     signal data_out_ram             : unsigned(15 downto 0);
     signal endereco_ram             : unsigned(6 downto 0);
     signal carry_flag, zero_flag    : std_logic;
-    signal primo_s                  : unsigned(15 downto 0);
+    signal primo_s, divisor_s       : unsigned(15 downto 0);
     signal jump_re                  : std_logic;
     signal wr_flag                  : std_logic;
 
@@ -129,5 +130,8 @@ begin
 
     primo_s <= data_out_ram when instruction="01110001100000000" and data_out_ram/="0000000000000000" else primo_s;
     primo <= primo_s;
+
+    divisor_s <= result when instruction="00111010100000000" else "0000000000000000";
+    divisor <= divisor_s;
 
 end architecture;
