@@ -16,14 +16,14 @@ architecture a_processador_tb of processador_tb is
         clk             : in std_logic;
         rst             : in std_logic;
         primo           : out unsigned(15 downto 0);
-        divisor         : out unsigned(15 downto 0)
+        validation      : out std_logic
     );
     end component;
 
     constant period_time            : time := 100 ns;
     signal finished                 : std_logic := '0';
-    signal clk, rst                 : std_logic;
-    signal primo, divisor           : unsigned(15 downto 0);
+    signal clk, rst, validation     : std_logic;
+    signal primo                    : unsigned(15 downto 0);
 
 begin
 
@@ -31,7 +31,7 @@ begin
         clk => clk,
         rst => rst,
         primo => primo,
-        divisor => divisor
+        validation => validation
     );
 
     reset_global: process
